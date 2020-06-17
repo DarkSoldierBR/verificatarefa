@@ -1,0 +1,1 @@
+('Não há não tarefas pendentes', '\n')
