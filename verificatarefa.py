@@ -52,25 +52,25 @@ def verify(materia):
 
 
 def run():
-    # i = 165
-    # p = 287
-    # limit = 0
+    i = 165
+    p = 287
+    limit = 0
 
-    # time.sleep(2)
-    # mouse_click(380, 150)
-    # while limit < 9:
-    #     z = i+13
-    #     i = i+47
-    #     p = i+25
-    #     time.sleep(1)
-    #     mouse_click(145, i)
-    #     materia = screenshot(153, z, 155, 50)
-    #     mouse_click(139, p)
-    #     mouse_click(878, 75)
-    #     time.sleep(6)
-    #     verify(materia)
-    #     mouse_click(145, i)
-    #     limit = limit+1
+    time.sleep(2)
+    mouse_click(380, 150)
+    while limit < 9:
+        z = i+13
+        i = i+47
+        p = i+25
+        time.sleep(1)
+        mouse_click(145, i)
+        materia = screenshot(153, z, 155, 50)
+        mouse_click(139, p)
+        mouse_click(878, 75)
+        time.sleep(6)
+        verify(materia)
+        mouse_click(145, i)
+        limit = limit+1
 
     # SCROLL 2 PARTE (ALTURA E EXPANSÃO MUDAM)
     i = 162
