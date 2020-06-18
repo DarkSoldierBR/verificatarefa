@@ -1,22 +1,22 @@
 import mss
 import keyboard
 import pyscreenshot as ImageGrab
-import pyautogui as ag
+import pyautogui
+import PIL.ImageOps
 import time
 from PIL import Image
 import pytesseract as tess
 tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-resposta = ""
-text = ''
-title = ''
-resultado = ''
+materia = ''
+atividades_total = 0
+materias_total = 0
 
 
 def mouse_click(x, y):
-    #    print(x,',',y)
-    ag.click(x, y)
-#    print(ag.position())
+
+    pyautogui.click(x, y)
+
     time.sleep(1)
 
 
@@ -26,63 +26,53 @@ def mouse_position():
         time.sleep(1)
 
 
-def screenshot(left, top, width, height, name):
-    with mss.mss() as sct:
-        monitor = {"left": left, "top": top, "width": width, "height": height}
-        sct_img = sct.grab(monitor)
-        output = name.format(**monitor)
-        mss.tools.to_png(sct_img.rgb, sct_img.size, output=output)
-
-
-def convert_text(name):
-    img = Image.open(name)
-   # print("[Screenshot] ",img)
-    text = tess.image_to_string(img)
-    print("[TEXT]", text)
+def screenshot(left, top, width, height):
+    image = pyautogui.screenshot(region=(left, top, width, height))
+    inverted_image = PIL.ImageOps.invert(image)
+    text = tess.image_to_string(inverted_image)
+    #print("[SCREENSHOT TEXT]", text)
 
     return text
 
 
-def verify():
-    result_conversion = convert_text('teams_notas_shot.png')
-    print('result_conversion'+result_conversion)
+def verify(materia):
+    i = 300
+    atividade = screenshot(430, i, 550, 50)
+    global materias_total
+    global atividades_total
 
-    if 'Visualizado' in result_conversion:
-        verify = (" há tarefas pendentes")
-    elif 'Nao entregue' in result_conversion:
-        verify = (" há tarefas pendentes")
+    if atividade == '':
+        print('['+materia+'] Não há tarefas')
+    elif 'Visualizado' in atividade or 'Nao entregue' in atividade:
+        print('['+materia+'] Há tarefas pendentes')
+        materias_total = materias_total + 1
+        while 'Visualizado' in screenshot(430, i, 550, 50) or 'Nao entregue' in screenshot(430, i, 550, 50):
+            atividades_total = atividades_total + 1
+            print('[Atividade] ['+materia+']'+screenshot(430, i, 550, 50))
+            i = i+50
     else:
-         verify = (" não há não tarefas pendentes")
-
-    print("[Verify]", verify)
-
-    return verify
+        print('['+materia+'] Não há tarefas')
 
 
 def main():
     i = 165
     p = 287
     limit = 0
+
+    time.sleep(2)
     mouse_click(380, 150)
 
     while limit < 9:
         z = i+13
         i = i+47
         p = i+25
-        screenshot(153, z, 155, 50, 'title.png')
+        materia = screenshot(153, z, 155, 50)
         time.sleep(1)
         mouse_click(95, i)
-        time.sleep(1)
         mouse_click(139, p)
         mouse_click(878, 75)
-        time.sleep(5)
-        screenshot(880, 300, 120, 300, 'teams_notas_shot.png')
-        time.sleep(1)
-        resposta = '[Verify] Na matéria ' + \
-            convert_text('title.png')+verify()+'\n'
-        print('[RESULTADO]', resposta)
-        resultado =+ resposta
-        time.sleep(1)
+        time.sleep(6)
+        verify(materia)
         mouse_click(95, i)
         limit = limit+1
 
@@ -94,27 +84,26 @@ def main():
     while limit < 7:
         z = i+13
         i = i+47
-        screenshot(153, z, 155, 50, 'title.png')
+        p = i+30
+        materia = screenshot(153, z, 155, 50)
         time.sleep(1)
         mouse_click(95, i)
         time.sleep(1)
-        mouse_click(139, i)
+        mouse_click(139, p)
         mouse_click(878, 75)
         time.sleep(5)
-        screenshot(880, 300, 120, 300, 'teams_notas_shot.png')
-        time.sleep(1)
-        resposta = '[Verify] Na matéria ' + \
-            convert_text('title.png')+verify()+'\n'
-        print('[RESULTADO]', resposta)
-        resultado = resultado + resposta
-        time.sleep(1)
+        verify(materia)
         mouse_click(95, i)
 
         limit = limit+1
 
-    with open("Output.txt", "w") as text_file:
-        text_file.write(str(resultado))
+    if(atividades_total > 0):
+        print('[TOTAL] Você tem '+str(atividades_total) +
+              ' atividades em '+str(materias_total)+' matérias.')
+    else:
+        print("Parabêns! Você não tem tarefas pendentes")
+
+    input("Pressione alguma tecla para sair")
 
 
 main()
-# mouse_position()

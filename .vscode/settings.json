@@ -1,3 +1,5 @@
 {
     "python.pythonPath": "C:\\Users\\Mateus\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe"
+    "editor.tabSize": 4
+    "editor.renderWhitespace": "all"
 }
