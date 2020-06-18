@@ -1,6 +1,3 @@
-import mss
-import keyboard
-import pyscreenshot as ImageGrab
 import pyautogui
 import PIL.ImageOps
 import time
@@ -11,12 +8,11 @@ tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 materia = ''
 atividades_total = 0
 materias_total = 0
+atividades_pendentes = ''
 
 
 def mouse_click(x, y):
-
     pyautogui.click(x, y)
-
     time.sleep(1)
 
 
@@ -30,7 +26,6 @@ def screenshot(left, top, width, height):
     image = pyautogui.screenshot(region=(left, top, width, height))
     inverted_image = PIL.ImageOps.invert(image)
     text = tess.image_to_string(inverted_image)
-    #print("[SCREENSHOT TEXT]", text)
 
     return text
 
@@ -40,6 +35,7 @@ def verify(materia):
     atividade = screenshot(430, i, 550, 50)
     global materias_total
     global atividades_total
+    global atividades_pendentes
 
     if atividade == '':
         print('['+materia+'] Não há tarefas')
@@ -48,33 +44,33 @@ def verify(materia):
         materias_total = materias_total + 1
         while 'Visualizado' in screenshot(430, i, 550, 50) or 'Nao entregue' in screenshot(430, i, 550, 50):
             atividades_total = atividades_total + 1
-            print('[Atividade] ['+materia+']'+screenshot(430, i, 550, 50))
+            atividades_pendentes = atividades_pendentes + '\n' + '[Atividade] ['+materia+'] '+screenshot(430, i, 550, 50)
+            print('[Atividade] ['+materia+'] '+screenshot(430, i, 550, 50))
             i = i+50
     else:
         print('['+materia+'] Não há tarefas')
 
 
-def main():
-    i = 165
-    p = 287
-    limit = 0
+def run():
+    # i = 165
+    # p = 287
+    # limit = 0
 
-    time.sleep(2)
-    mouse_click(380, 150)
-
-    while limit < 9:
-        z = i+13
-        i = i+47
-        p = i+25
-        materia = screenshot(153, z, 155, 50)
-        time.sleep(1)
-        mouse_click(95, i)
-        mouse_click(139, p)
-        mouse_click(878, 75)
-        time.sleep(6)
-        verify(materia)
-        mouse_click(95, i)
-        limit = limit+1
+    # time.sleep(2)
+    # mouse_click(380, 150)
+    # while limit < 9:
+    #     z = i+13
+    #     i = i+47
+    #     p = i+25
+    #     time.sleep(1)
+    #     mouse_click(145, i)
+    #     materia = screenshot(153, z, 155, 50)
+    #     mouse_click(139, p)
+    #     mouse_click(878, 75)
+    #     time.sleep(6)
+    #     verify(materia)
+    #     mouse_click(145, i)
+    #     limit = limit+1
 
     # SCROLL 2 PARTE (ALTURA E EXPANSÃO MUDAM)
     i = 162
@@ -86,17 +82,16 @@ def main():
         i = i+47
         p = i+30
         materia = screenshot(153, z, 155, 50)
-        time.sleep(1)
-        mouse_click(95, i)
+        mouse_click(145, i)
         time.sleep(1)
         mouse_click(139, p)
         mouse_click(878, 75)
         time.sleep(5)
         verify(materia)
-        mouse_click(95, i)
-
+        mouse_click(145, i)
         limit = limit+1
 
+    print(atividades_pendentes)
     if(atividades_total > 0):
         print('[TOTAL] Você tem '+str(atividades_total) +
               ' atividades em '+str(materias_total)+' matérias.')
@@ -106,4 +101,4 @@ def main():
     input("Pressione alguma tecla para sair")
 
 
-main()
+run()

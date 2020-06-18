@@ -1,0 +1,1 @@
+py verificatarefa.py
