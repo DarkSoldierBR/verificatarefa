@@ -8,7 +8,7 @@ tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 materia = ''
 atividades_total = 0
 materias_total = 0
-atividades_pendentes = ''
+atividades_pendentes = '\n \n================================================\n \n'
 
 
 def mouse_click(x, y):
@@ -52,6 +52,7 @@ def verify(materia):
 
 
 def run():
+    log_file = open("log.txt","w")
     i = 165
     p = 287
     limit = 0
@@ -97,7 +98,7 @@ def run():
               ' atividades em '+str(materias_total)+' matérias.')
     else:
         print("Parabêns! Você não tem tarefas pendentes")
-
+    log_file.write(atividades_pendentes)
     input("Pressione alguma tecla para sair")
 
 
