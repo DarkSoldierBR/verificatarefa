@@ -43,16 +43,19 @@ def verify(materia):
         print('['+materia+'] Há tarefas pendentes')
         materias_total = materias_total + 1
         while 'Visualizado' in screenshot(430, i, 550, 50) or 'Nao entregue' in screenshot(430, i, 550, 50):
+            atividade = screenshot(430, i, 550, 50)
+            data = atividade[0:6]
+            titulo = atividade[7:]
             atividades_total = atividades_total + 1
-            atividades_pendentes = atividades_pendentes + '\n' + '[Atividade] ['+materia+'] '+screenshot(430, i, 550, 50)
-            print('[Atividade] ['+materia+'] '+screenshot(430, i, 550, 50))
+
+            atividades_pendentes = atividades_pendentes + '[Atividade] ['+materia+'] '+'['+data+'] '+titulo '\n'
+            print('[Atividade] ['+materia+'] '+'['+data+'] '+titulo)
             i = i+50
     else:
         print('['+materia+'] Não há tarefas')
 
 
 def run():
-    log_file = open("log.txt","w")
     i = 165
     p = 287
     limit = 0
@@ -98,8 +101,9 @@ def run():
               ' atividades em '+str(materias_total)+' matérias.')
     else:
         print("Parabêns! Você não tem tarefas pendentes")
+
+    log_file = open("log.txt","w")
     log_file.write(atividades_pendentes)
     input("Pressione alguma tecla para sair")
-
 
 run()
