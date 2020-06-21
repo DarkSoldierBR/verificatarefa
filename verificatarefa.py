@@ -48,7 +48,7 @@ def verify(materia):
             titulo = atividade[7:]
             atividades_total = atividades_total + 1
 
-            atividades_pendentes = atividades_pendentes + '[Atividade] ['+materia+'] '+'['+data+'] '+titulo '\n'
+            atividades_pendentes = atividades_pendentes + '[Atividade] ['+materia+'] '+'['+data+'] '+titulo+'\n'
             print('[Atividade] ['+materia+'] '+'['+data+'] '+titulo)
             i = i+50
     else:
