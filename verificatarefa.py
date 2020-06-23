@@ -61,7 +61,6 @@ def run():
     limit = 0
 
     time.sleep(2)
-    mouse_click(380, 150)
     while limit < 9:
         z = i+13
         i = i+47
