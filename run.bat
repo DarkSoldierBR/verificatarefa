@@ -1,1 +1,2 @@
 py verificatarefa.py
+PAUSE

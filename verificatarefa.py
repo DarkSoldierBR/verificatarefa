@@ -3,6 +3,7 @@ import PIL.ImageOps
 import time
 from PIL import Image
 import pytesseract as tess
+import re
 tess.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 materia = ''
@@ -44,8 +45,16 @@ def verify(materia):
         materias_total = materias_total + 1
         while 'Visualizado' in screenshot(430, i, 550, 50) or 'Nao entregue' in screenshot(430, i, 550, 50):
             atividade = screenshot(430, i, 550, 50)
-            data = atividade[0:6]
-            titulo = atividade[7:]
+
+            data_check = re.findall(r'\d+', str(atividade[0:6]))
+            data_check=len(data_check)
+            if(data_check>1):
+                data = atividade[0:6]
+                titulo = atividade[7:]
+            else:
+                data = atividade[0:5]
+                titulo = atividade[6:]
+
             atividades_total = atividades_total + 1
 
             atividades_pendentes = atividades_pendentes + '[Atividade] ['+materia+'] '+'['+data+'] '+titulo+'\n'
@@ -60,7 +69,8 @@ def run():
     p = 287
     limit = 0
 
-    time.sleep(2)
+    input("Pressione alguma tecla para iniciar")
+    time.sleep(1)
     while limit < 9:
         z = i+13
         i = i+47
