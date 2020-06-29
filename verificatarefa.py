@@ -45,15 +45,16 @@ def verify(materia):
         materias_total = materias_total + 1
         while 'Visualizado' in screenshot(430, i, 550, 50) or 'Nao entregue' in screenshot(430, i, 550, 50):
             atividade = screenshot(430, i, 550, 50)
-
+            print('atividade: '+atividade)
             data_check = re.findall(r'\d+', str(atividade[0:6]))
             data_check=len(data_check)
+
             if(data_check>1):
                 data = atividade[0:6]
                 titulo = atividade[7:]
             else:
-                data = atividade[0:5]
-                titulo = atividade[6:]
+                data = atividade[0:4]
+                titulo = atividade[5:]
 
             atividades_total = atividades_total + 1
 
@@ -108,11 +109,10 @@ def run():
     if(atividades_total > 0):
         print('[TOTAL] Você tem '+str(atividades_total) +
               ' atividades em '+str(materias_total)+' matérias.')
+        log_file = open("log.txt","w")
+        log_file.write(atividades_pendentes)      
     else:
         print("Parabêns! Você não tem tarefas pendentes")
-
-    log_file = open("log.txt","w")
-    log_file.write(atividades_pendentes)
     input("Pressione alguma tecla para sair")
 
 run()
