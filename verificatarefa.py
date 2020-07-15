@@ -1,5 +1,6 @@
 import pyautogui
 import PIL.ImageOps
+import pyautogui as ag
 import time
 from PIL import Image
 import pytesseract as tess
@@ -14,8 +15,6 @@ atividades_pendentes = '\n \n================================================\n 
 
 def mouse_click(x, y):
     pyautogui.click(x, y)
-    time.sleep(1)
-
 
 def mouse_position():
     while True:
@@ -29,7 +28,6 @@ def screenshot(left, top, width, height):
     text = tess.image_to_string(inverted_image)
 
     return text
-
 
 def verify(materia):
     i = 300
@@ -55,9 +53,7 @@ def verify(materia):
             else:
                 data = atividade[0:4]
                 titulo = atividade[5:]
-
             atividades_total = atividades_total + 1
-
             atividades_pendentes = atividades_pendentes + '[Atividade] ['+materia+'] '+'['+data+'] '+titulo+'\n'
             print('[Atividade] ['+materia+'] '+'['+data+'] '+titulo)
             i = i+50
@@ -87,7 +83,7 @@ def run():
         limit = limit+1
 
     # SCROLL 2 PARTE (ALTURA E EXPANSÃO MUDAM)
-    i = 162
+    i = 103
     limit = 0
     mouse_click(380, 525)
 
@@ -109,10 +105,10 @@ def run():
     if(atividades_total > 0):
         print('[TOTAL] Você tem '+str(atividades_total) +
               ' atividades em '+str(materias_total)+' matérias.')
-        log_file = open("log.txt","w")
-        log_file.write(atividades_pendentes)      
     else:
         print("Parabêns! Você não tem tarefas pendentes")
     input("Pressione alguma tecla para sair")
 
 run()
+log_file = open("log.txt","w")
+log_file.write(atividades_pendentes)
