@@ -1,3 +1,4 @@
+import time
 import pyautogui
 import PIL.ImageOps
 import pyautogui as ag
@@ -12,6 +13,7 @@ atividades_total = 0
 materias_total = 0
 atividades_pendentes = '\n \n================================================\n \n'
 
+prints=0
 
 def mouse_click(x, y):
     pyautogui.click(x, y)
@@ -23,8 +25,10 @@ def mouse_position():
 
 
 def screenshot(left, top, width, height):
+    global prints
     image = pyautogui.screenshot(region=(left, top, width, height))
     inverted_image = PIL.ImageOps.invert(image)
+    prints=prints+1
     text = tess.image_to_string(inverted_image)
 
     return text
@@ -62,41 +66,41 @@ def verify(materia):
 
 
 def run():
-    i = 165
-    p = 287
+    inicio = time.time()
+    i = 165 #Parametro inical matéria
     limit = 0
 
-    input("Pressione alguma tecla para iniciar")
+    #input("Pressione alguma tecla para iniciar")
     time.sleep(1)
-    while limit < 9:
-        z = i+13
-        i = i+47
-        p = i+25
-        time.sleep(1)
+    while limit < 9:     
+        z = i+13 #Parametro print Matéria
+        i = i+47 #Parametro click da Matéria
+        p = i+25 #Parametro click do canal
         mouse_click(145, i)
-        materia = screenshot(153, z, 155, 50)
         mouse_click(139, p)
+        time.sleep(2)
         mouse_click(878, 75)
         time.sleep(6)
+        materia = screenshot(153, z, 155, 50)
         verify(materia)
         mouse_click(145, i)
         limit = limit+1
 
     # SCROLL 2 PARTE (ALTURA E EXPANSÃO MUDAM)
-    i = 103
+    i = 103 #Parametro inical matéria
     limit = 0
-    mouse_click(380, 525)
+    mouse_click(380, 525) #Click Scroll
 
     while limit < 7:
-        z = i+13
-        i = i+47
-        p = i+30
-        materia = screenshot(153, z, 155, 50)
+        z = i+13 #Parametro print Matéria
+        i = i+47 #Parametro click da Matéria
+        p = i+30 #Parametro click do canal
         mouse_click(145, i)
-        time.sleep(1)
         mouse_click(139, p)
+        time.sleep(2)
         mouse_click(878, 75)
-        time.sleep(5)
+        time.sleep(6)
+        materia = screenshot(153, z, 155, 50)
         verify(materia)
         mouse_click(145, i)
         limit = limit+1
@@ -107,8 +111,15 @@ def run():
               ' atividades em '+str(materias_total)+' matérias.')
     else:
         print("Parabêns! Você não tem tarefas pendentes")
+    print("Total de screenshots tiradas: "+str(prints))
+    fim = time.time()
+    total = (fim-inicio)
+    total= str(total)
+    total = total[0:6]
+    print("Tempo de execução: "+total+" segundos.")
     input("Pressione alguma tecla para sair")
 
 run()
+#mouse_position()
 log_file = open("log.txt","w")
 log_file.write(atividades_pendentes)
