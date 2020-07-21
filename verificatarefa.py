@@ -70,7 +70,7 @@ def run():
     i = 165 #Parametro inical matéria
     limit = 0
 
-    #input("Pressione alguma tecla para iniciar")
+    input("Pressione alguma tecla para iniciar")
     time.sleep(1)
     while limit < 9:     
         z = i+13 #Parametro print Matéria
