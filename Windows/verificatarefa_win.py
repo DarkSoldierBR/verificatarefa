@@ -67,7 +67,7 @@ def verify(materia):
 
 def run():
     inicio = time.time()
-    i = 165 #Parametro inical matéria
+    i = 263 #Parametro inical matéria
     limit = 0
 
     input("Pressione alguma tecla para iniciar")
@@ -116,7 +116,9 @@ def run():
     total = (fim-inicio)
     total= str(total)
     total = total[0:6]
-    print("Tempo de execução: "+total+" segundos.")
+    tempominutos = (float(total))/60
+    tempominutos=str(tempominutos)[0:4]
+    print("Tempo de execução: " +tempominutos+" minutos " +"("+total+" segundos)")
     input("Pressione alguma tecla para sair")
 
 run()
